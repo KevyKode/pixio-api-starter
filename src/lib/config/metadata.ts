@@ -78,7 +78,7 @@ export const siteMetadata: Metadata = {
   // Open Graph metadata
   openGraph: {
     type: 'website',
-    siteName: 'Pixio API Starter',
+    siteName: 'AI Sprite Sheet Generator',
     title: 'Pixio API Starter - AI Media Generation',
     description: 'Unleash AI creativity with Pixio API for stunning image and video generation, powered by Supabase, NextJS, and Stripe',
     locale: 'en_US',

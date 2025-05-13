@@ -352,7 +352,7 @@ const WorkflowCard = ({ title, description, link, icon, index }: WorkflowCardPro
             >
               <Link href={link} target="_blank" rel="noopener noreferrer">
                 <ExternalLink className="h-4 w-4 group-hover:scale-110 transition-transform" />
-                <span>Open in Pixio API</span>
+                <span>Create in the AI Sprite Sheet Generator</span>
               </Link>
             </Button>
           </CardFooter>
@@ -437,7 +437,7 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          Choose the perfect plan for your needs. All plans include access to Pixio API machines.
+          Choose the perfect plan for your needs. All plans include access to the AI Sprite Sheet Generator.
         </motion.p>
 
         {/* Billing toggle */}
@@ -766,25 +766,25 @@ export default function LandingPage() {
               animate={mounted ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <h1
-                className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: "linear-gradient(to right, #7068F4, #FF64B4, #ffac4c)",
-                  backgroundSize: "200% 200%",
-                  ...(mounted ? {
-                    animation: "gradientMove 15s ease infinite"
-                  } : {})
-                }}
-              >
-                Pixio API Starter
-              </h1>
+        <h1
+              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent"
+              style={{
+              backgroundImage: "linear-gradient(to right, #4F7DF2, #06ADC9, #8A49F7)",
+              backgroundSize: "200% 200%",
+              ...(mounted ? {
+              animation: "gradientMove 15s ease infinite"
+              } : {})
+             }}
+          >
+            AI Sprite Sheet Generator
+          </h1>
 
-              <style jsx global>{`
+          <style jsx global>{`
                 @keyframes gradientMove {
-                  0% { background-position: 0% 50% }
-                  50% { background-position: 100% 50% }
-                  100% { background-position: 0% 50% }
-                }
+                0% { background-position: 0% 50% }
+                50% { background-position: 100% 50% }
+                100% { background-position: 0% 50% }
+              }
               `}</style>
             </motion.div>
 
@@ -794,8 +794,8 @@ export default function LandingPage() {
               animate={mounted ? { opacity: 1 } : {}}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              Unleash AI creativity with powerful machines for stunning image and video generation,
-              powered by Supabase and a flexible credit system
+              Unleash your creativity with the most powerful AI Sprite Sheet Generator for polished, 3D assets for your next game, 3D printing art, and more.
+              Powered by Supabase and a flexible credit system
             </motion.p>
 
             <motion.div
@@ -807,7 +807,7 @@ export default function LandingPage() {
   <MagneticButton className="bg-gradient-to-r from-primary/90 to-secondary/90 hover:from-primary/95 hover:to-secondary/95 text-white rounded-md py-2 px-4 font-medium shadow-md hover:shadow-lg transition-shadow">
     <Link href="https://api.myapps.ai" target="_blank" rel="noopener noreferrer" className="flex items-center">
       <ExternalLink className="mr-2 h-4 w-4" />
-      Visit Pixio API
+      Create Assets
     </Link>
   </MagneticButton>
 
@@ -893,7 +893,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-semibold mb-2 text-primary">Image Generation</h3>
                 <p className="text-foreground/80">
-                  Create stunning images using advanced AI machines powered by the Pixio API. Turn text prompts into visual art.
+                  Create stunning Sprite Sheets & Assets using advanced AI workflows powered by the Pixio API. Turn text prompts into visual art.
                 </p>
               </motion.div>
             </MouseTrackCard>
@@ -1002,7 +1002,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <GradientHeading className="mx-auto justify-center" from="from-accent/90" via="via-primary" to="to-secondary">
-              How Pixio API Works
+              How To Make Your Own Sprite Sheets
             </GradientHeading>
           </div>
 
@@ -1045,9 +1045,9 @@ export default function LandingPage() {
                     <span>1</span>
                   )}
                 </div>
-                <h3 className="text-xl font-semibold mb-2">Choose Your Type</h3>
+                <h3 className="text-xl font-semibold mb-2">Create Your Prompt</h3>
                 <p className="text-foreground/80">
-                  Select between image or video generation in the intuitive dashboard interface.
+                  Write detailed prompts to guide the AI in generating your desired output.
                 </p>
               </motion.div>
             </MouseTrackCard>

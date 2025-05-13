@@ -32,7 +32,7 @@ export default function SignupPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
         >
           <CardDescription>
-            Create an account to get started with Pixio API
+            Create an account to start creating your 3d assets with the AI Sprite Sheet Generator!
           </CardDescription>
         </motion.div>
       </CardHeader>

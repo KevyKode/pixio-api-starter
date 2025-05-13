@@ -65,7 +65,7 @@ export default function AuthLayout({
             animate={mounted ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
           >
-            Pixio<span className="font-bold">API</span>
+            AI Sprite<span className="font-bold">Sheet Generator</span>
           </motion.span>
         </Link>
         
@@ -86,7 +86,7 @@ export default function AuthLayout({
       
       <div className="p-4 text-center text-sm text-muted-foreground relative z-10">
         <p>
-          © {new Date().getFullYear()} Pixio API. All rights reserved.
+          © {new Date().getFullYear()} AI Sprite Sheet Generator. All rights reserved.
         </p>
       </div>
     </div>

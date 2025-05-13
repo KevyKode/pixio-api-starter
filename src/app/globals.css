@@ -43,121 +43,121 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* Modern glassmorphic theme with our color scheme */
+/* Tech-inspired glassmorphic theme with digital aesthetic */
 :root {
-  /* Increased border radius for a sleeker feel */
-  --radius: 1rem;
+  /* Increased border radius for a modern tech feel */
+  --radius: 0.75rem;
   
-  /* Background with subtle color */
-  --background: oklch(0.98 0.01 270);
-  --foreground: oklch(0.2 0.02 280);
+  /* Cool tech background */
+  --background: oklch(0.98 0.01 240);
+  --foreground: oklch(0.2 0.02 240);
   
-  /* Card styling with glass effect */
-  --card: oklch(0.97 0.01 270 / 0.7);
-  --card-foreground: oklch(0.2 0.02 280);
+  /* Card styling with high-tech glass effect */
+  --card: oklch(0.97 0.01 240 / 0.7);
+  --card-foreground: oklch(0.2 0.02 240);
   
   /* Popover styling */
-  --popover: oklch(0.97 0.01 270 / 0.8);
-  --popover-foreground: oklch(0.2 0.02 280);
+  --popover: oklch(0.97 0.01 240 / 0.8);
+  --popover-foreground: oklch(0.2 0.02 240);
   
-  /* Purple primary color from #7068F4 */
-  --primary: oklch(0.65 0.2 280);
+  /* Tech blue primary color from #4F7DF2 */
+  --primary: oklch(0.65 0.18 260);
   --primary-foreground: oklch(0.99 0.01 0);
   
-  /* Pink secondary color from #FF64B4 */
-  --secondary: oklch(0.72 0.22 350);
+  /* Cyber teal secondary color from #06ADC9 */
+  --secondary: oklch(0.67 0.15 200);
   --secondary-foreground: oklch(0.99 0.01 0);
   
-  /* Muted tones for subtle elements */
-  --muted: oklch(0.95 0.03 270);
-  --muted-foreground: oklch(0.5 0.05 280);
+  /* Muted tech tones for subtle elements */
+  --muted: oklch(0.95 0.03 240);
+  --muted-foreground: oklch(0.5 0.05 240);
   
-  /* Orange accent color from #ffac4c */
-  --accent: oklch(0.8 0.15 60);
-  --accent-foreground: oklch(0.15 0.02 0);
+  /* Electric purple accent color from #8A49F7 */
+  --accent: oklch(0.63 0.22 280);
+  --accent-foreground: oklch(0.99 0.01 0);
   
   /* Red tone for destructive actions */
   --destructive: oklch(0.65 0.25 25);
   --destructive-foreground: oklch(0.99 0.01 0);
   
-  /* Soft borders and inputs */
-  --border: oklch(0.9 0.02 270 / 0.2);
-  --input: oklch(0.9 0.02 270 / 0.2);
-  --ring: oklch(0.65 0.2 280 / 0.5);
+  /* Soft tech-inspired borders and inputs */
+  --border: oklch(0.9 0.02 240 / 0.2);
+  --input: oklch(0.9 0.02 240 / 0.2);
+  --ring: oklch(0.65 0.18 260 / 0.5);
   
   /* Chart colors */
-  --chart-1: oklch(0.65 0.2 280); /* Purple - #7068F4 */
-  --chart-2: oklch(0.72 0.22 350); /* Pink - #FF64B4 */
-  --chart-3: oklch(0.8 0.15 60);  /* Orange - #ffac4c */
-  --chart-4: oklch(0.7 0.18 320); /* Magenta */
-  --chart-5: oklch(0.6 0.15 240); /* Blue-purple */
+  --chart-1: oklch(0.65 0.18 260); /* Tech blue - #4F7DF2 */
+  --chart-2: oklch(0.67 0.15 200); /* Cyber teal - #06ADC9 */
+  --chart-3: oklch(0.63 0.22 280); /* Electric purple - #8A49F7 */
+  --chart-4: oklch(0.7 0.15 230); /* Azure blue */
+  --chart-5: oklch(0.6 0.12 190); /* Cyberpunk blue */
   
   /* Sidebar styling */
-  --sidebar: oklch(0.97 0.01 270 / 0.7);
-  --sidebar-foreground: oklch(0.2 0.02 280);
-  --sidebar-primary: oklch(0.65 0.2 280);
+  --sidebar: oklch(0.97 0.01 240 / 0.7);
+  --sidebar-foreground: oklch(0.2 0.02 240);
+  --sidebar-primary: oklch(0.65 0.18 260);
   --sidebar-primary-foreground: oklch(0.99 0.01 0);
-  --sidebar-accent: oklch(0.8 0.15 60);
-  --sidebar-accent-foreground: oklch(0.15 0.02 0);
-  --sidebar-border: oklch(0.9 0.02 270 / 0.2);
-  --sidebar-ring: oklch(0.65 0.2 280 / 0.5);
+  --sidebar-accent: oklch(0.63 0.22 280);
+  --sidebar-accent-foreground: oklch(0.99 0.01 0);
+  --sidebar-border: oklch(0.9 0.02 240 / 0.2);
+  --sidebar-ring: oklch(0.65 0.18 260 / 0.5);
 }
 
-/* Dark mode with futuristic tech feel */
+/* Dark mode with futuristic digital tech feel */
 .dark {
-  /* Deep backgrounds with subtle transparency */
-  --background: oklch(0.15 0.03 280);
+  /* Deep tech backgrounds with subtle transparency */
+  --background: oklch(0.15 0.03 240);
   --foreground: oklch(0.96 0.02 0);
   
-  /* Card styling with glassy effect */
-  --card: oklch(0.2 0.04 280 / 0.6);
+  /* Card styling with cyberpunk glassy effect */
+  --card: oklch(0.2 0.04 240 / 0.6);
   --card-foreground: oklch(0.96 0.02 0);
   
   /* Popover styling */
-  --popover: oklch(0.2 0.04 280 / 0.7);
+  --popover: oklch(0.2 0.04 240 / 0.7);
   --popover-foreground: oklch(0.96 0.02 0);
   
-  /* Brighter purple primary for dark mode - #7068F4 */
-  --primary: oklch(0.7 0.2 280);
+  /* Brighter tech blue primary for dark mode - #4F7DF2 */
+  --primary: oklch(0.7 0.18 260);
   --primary-foreground: oklch(0.1 0.02 0);
   
-  /* Brighter pink for visibility - #FF64B4 */
-  --secondary: oklch(0.72 0.22 350);
+  /* Glowing cyber teal for visibility - #06ADC9 */
+  --secondary: oklch(0.72 0.15 200);
   --secondary-foreground: oklch(0.1 0.02 0);
   
-  /* Dark muted colors */
-  --muted: oklch(0.25 0.04 280);
-  --muted-foreground: oklch(0.7 0.05 280);
+  /* Dark tech muted colors */
+  --muted: oklch(0.25 0.04 240);
+  --muted-foreground: oklch(0.7 0.05 240);
   
-  /* Brighter orange accent for dark mode visibility - #ffac4c */
-  --accent: oklch(0.8 0.15 60);
+  /* Bright electric purple accent for dark mode visibility - #8A49F7 */
+  --accent: oklch(0.68 0.22 280);
   --accent-foreground: oklch(0.1 0.02 0);
   
   /* Brighter destructive for visibility */
   --destructive: oklch(0.75 0.28 25);
   --destructive-foreground: oklch(0.1 0.02 0);
   
-  /* Subtle glowing borders */
-  --border: oklch(0.65 0.15 280 / 0.15);
-  --input: oklch(0.65 0.15 280 / 0.2);
-  --ring: oklch(0.7 0.2 280 / 0.5);
+  /* Subtle tech glowing borders */
+  --border: oklch(0.65 0.15 260 / 0.15);
+  --input: oklch(0.65 0.15 260 / 0.2);
+  --ring: oklch(0.7 0.18 260 / 0.5);
   
   /* Dark mode chart colors - brighter for contrast */
-  --chart-1: oklch(0.7 0.22 280); /* Brighter purple */
-  --chart-2: oklch(0.75 0.24 350); /* Brighter pink */
-  --chart-3: oklch(0.83 0.17 60);  /* Brighter orange */
-  --chart-4: oklch(0.75 0.2 320); /* Brighter magenta */
-  --chart-5: oklch(0.65 0.18 240); /* Brighter blue-purple */
+  --chart-1: oklch(0.7 0.2 260); /* Brighter tech blue */
+  --chart-2: oklch(0.75 0.18 200); /* Brighter cyber teal */
+  --chart-3: oklch(0.7 0.25 280); /* Brighter electric purple */
+  --chart-4: oklch(0.75 0.2 230); /* Brighter azure blue */
+  --chart-5: oklch(0.65 0.15 190); /* Brighter cyberpunk blue */
   
-  /* Dark sidebar with glass effect */
-  --sidebar: oklch(0.2 0.04 280 / 0.6);
+  /* Dark sidebar with tech glass effect */
+  --sidebar: oklch(0.2 0.04 240 / 0.6);
   --sidebar-foreground: oklch(0.96 0.02 0);
-  --sidebar-primary: oklch(0.7 0.2 280);
+  --sidebar-primary: oklch(0.7 0.18 260);
   --sidebar-primary-foreground: oklch(0.1 0.02 0);
-  --sidebar-accent: oklch(0.8 0.15 60);
+  --sidebar-accent: oklch(0.68 0.22 280);
   --sidebar-accent-foreground: oklch(0.1 0.02 0);
-  --sidebar-border: oklch(0.65 0.15 280 / 0.15);
-  --sidebar-ring: oklch(0.7 0.2 280 / 0.5);
+  --sidebar-border: oklch(0.65 0.15 260 / 0.15);
+  --sidebar-ring: oklch(0.7 0.18 260 / 0.5);
 }
 
 @layer base {
@@ -165,10 +165,10 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground bg-gradient-to-br from-primary/5 via-background to-secondary/5;
+    @apply bg-background text-foreground bg-gradient-to-br from-primary/5 via-background to-accent/5;
   }
   
-  /* Modern typography */
+  /* Game asset tool typography */
   h1, h2, h3, h4, h5, h6 {
     @apply font-medium;
   }
@@ -186,7 +186,7 @@
   }
 }
 
-/* Glassmorphic and futuristic design utility classes */
+/* Tech UI and pixel art creation design utility classes */
 @layer components {
   .glass-card {
     @apply rounded-xl bg-white/20 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-lg hover:shadow-xl transition-shadow;
@@ -200,20 +200,27 @@
     @apply backdrop-blur-sm hover:shadow-lg transition-all shadow-md;
   }
   
-  .gradient-purple-pink {
+  .gradient-blue-teal {
     @apply bg-gradient-to-r from-primary to-secondary text-primary-foreground;
   }
   
-  .gradient-pink-orange {
+  .gradient-teal-purple {
     @apply bg-gradient-to-r from-secondary to-accent text-secondary-foreground;
   }
   
-  .gradient-purple-orange {
+  .gradient-blue-purple {
     @apply bg-gradient-to-r from-primary to-accent text-primary-foreground;
   }
   
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+  }
+  
+  .pixel-grid {
+    @apply border border-dashed border-primary/20;
+    background-image: linear-gradient(to right, var(--border) 1px, transparent 1px),
+                      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 16px 16px;
   }
   
   .gradient-border {
@@ -225,15 +232,15 @@
     mask-composite: exclude;
   }
   
-  .glass-bg {
-    @apply bg-gradient-to-br from-primary/5 via-background to-secondary/5;
+  .tech-glass-bg {
+    @apply bg-gradient-to-br from-primary/5 via-background to-accent/5;
   }
   
   .glass-container {
     @apply container mx-auto px-4 sm:px-6 lg:px-8 py-8;
   }
   
-  .futuristic-border {
+  .tech-border {
     @apply border border-white/20 dark:border-white/10 rounded-xl overflow-hidden;
   }
   
@@ -243,23 +250,28 @@
   
   .glow::after {
     @apply content-[''] absolute -inset-0.5 rounded-[inherit] z-[-1] opacity-75 pointer-events-none blur-md;
-    background: linear-gradient(35deg, #7068F4, transparent, #FF64B4, transparent, #ffac4c);
+    background: linear-gradient(35deg, #4F7DF2, transparent, #06ADC9, transparent, #8A49F7);
     animation: shimmer 10s ease-in-out infinite;
     background-size: 200% 200%;
   }
   
+  .glow-blue::after {
+    background: linear-gradient(35deg, #4F7DF2, rgba(79, 125, 242, 0.5), transparent);
+  }
+  
+  .glow-teal::after {
+    background: linear-gradient(35deg, #06ADC9, rgba(6, 173, 201, 0.5), transparent);
+  }
+  
   .glow-purple::after {
-    background: linear-gradient(35deg, #7068F4, rgba(112, 104, 244, 0.5), transparent);
+    background: linear-gradient(35deg, #8A49F7, rgba(138, 73, 247, 0.5), transparent);
   }
   
-  .glow-pink::after {
-    background: linear-gradient(35deg, #FF64B4, rgba(255, 100, 180, 0.5), transparent);
+  .pixel-block {
+    @apply transition-all duration-100 hover:translate-y-[-2px] shadow-md hover:shadow-lg;
+    image-rendering: pixelated;
   }
-  
-  .glow-orange::after {
-    background: linear-gradient(35deg, #ffac4c, rgba(255, 172, 76, 0.5), transparent);
-  }
-  
+
   .interactive-card {
     @apply transition-all duration-300 hover:translate-y-[-5px] hover:shadow-lg;
   }
@@ -278,6 +290,22 @@
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
   }
+  
+  .asset-preview {
+    @apply border-2 border-dashed border-secondary/40 bg-secondary/5 p-2 rounded-md;
+    box-shadow: 0 0 15px rgba(6, 173, 201, 0.2);
+  }
+  
+  .sprite-canvas {
+    @apply bg-white dark:bg-gray-900 rounded-md shadow-inner;
+    background-image: 
+      linear-gradient(45deg, rgba(0,0,0,0.05) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(0,0,0,0.05) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.05) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.05) 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
 }
 
 /* Animation keyframes */
@@ -294,4 +322,12 @@
 @keyframes pulse-glow {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 1; }
+}
+
+@keyframes pixel-shift {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(1px); }
+  50% { transform: translateX(0); }
+  75% { transform: translateX(-1px); }
+  100% { transform: translateX(0); }
 }

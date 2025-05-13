@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: [
       // Add your Supabase project URL here (without https://)
-      'yxuoskvkwyvzgykialtb.supabase.co',
+      'lqbmnifzvfmkmxjnydfk.supabase.co',
       // If you're using custom domains add them here
     ],
     remotePatterns: [
