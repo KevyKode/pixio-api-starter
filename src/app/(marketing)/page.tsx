@@ -948,7 +948,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <GradientHeading className="mx-auto justify-center" from="from-secondary" to="to-primary">
-              Ready-to-Use Pixio API Machines
+              Ready-to-Use Sprite Sheet Generation Models
             </GradientHeading>
 
             <motion.p
@@ -958,13 +958,13 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              Get started quickly with our pre-configured machines for image and video generation
+              Get started quickly with our pre-configured models for any of your Sprite Sheet Generating needs 
             </motion.p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
             <WorkflowCard
-              title="Flux with LoRA Machine"
+              title="H42 "
               description="Create beautiful illustrations and stylized images using this optimized Flux machine. Perfect for generating high-quality artwork with LoRA fine-tuning capabilities."
               link="https://api.myapps.ai/share/alisher-farhadi-book-illustrations"
               icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
