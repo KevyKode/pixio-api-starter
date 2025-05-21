@@ -2,100 +2,154 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { toast } from 'sonner';
-import { motion } from 'framer-motion';
-import { signupSchema, TSignupSchema } from '@/lib/validators/auth';
-import { signup } from '@/lib/actions/auth.actions';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { createClient } from '@/lib/supabase/client';
+import { Loader2 } from 'lucide-react';
+
+// Define form schema
+const formSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  fullName: z.string().min(2, { message: 'Full name must be at least 2 characters' }),
+});
 
 export function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
-  
-  const form = useForm<TSignupSchema>({
-    resolver: zodResolver(signupSchema),
+  const router = useRouter();
+  const supabase = createClient();
+
+  // Initialize form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
       password: '',
-      full_name: '',
+      fullName: '',
     },
   });
-  
-  async function onSubmit(values: TSignupSchema) {
+
+  // Handle form submission
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     
     try {
-      const result = await signup(values);
-      
-      if (result?.error) {
-        toast.error(result.error);
+      // Sign up with Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            full_name: values.fullName,
+          },
+        },
+      });
+
+      if (error) {
+        throw new Error(error.message);
       }
-    } finally {
+
+      // Create a user record in the users table
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from('users')
+          .insert([
+            {
+              id: data.user.id,
+              email: values.email,
+              full_name: values.fullName,
+            },
+          ]);
+
+        if (profileError) {
+          throw new Error(profileError.message);
+        }
+      }
+
+      toast.success('Account created successfully');
+      router.push('/dashboard');
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to create account');
       setIsLoading(false);
     }
   }
-  
-  const formFields = [
-    { name: "full_name", label: "Name", placeholder: "Your Name", type: "text" },
-    { name: "email", label: "Email", placeholder: "you@example.com", type: "email" },
-    { name: "password", label: "Password", placeholder: "••••••••", type: "password" },
-  ];
-  
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-        {formFields.map((field, i) => (
-          <motion.div
-            key={field.name}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 * i }}
-          >
-            <FormField
-              control={form.control}
-              name={field.name as any}
-              render={({ field: formField }) => (
-                <FormItem>
-                  <FormLabel className="text-foreground/90">{field.label}</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder={field.placeholder} 
-                      {...formField} 
-                      type={field.type}
-                      className="glass-input bg-white/10 dark:bg-white/5 border-white/20 focus:border-primary/50 transition-all"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
-        ))}
-        
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 0.4 }}
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="fullName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-white">Full Name</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="John Doe" 
+                  {...field} 
+                  className="bg-[#0a0b1e] border-[#00fff0]/40 focus:border-[#00fff0] text-white"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-white">Email</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="you@example.com" 
+                  {...field} 
+                  className="bg-[#0a0b1e] border-[#00fff0]/40 focus:border-[#00fff0] text-white"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-white">Password</FormLabel>
+              <FormControl>
+                <Input 
+                  type="password" 
+                  placeholder="••••••••" 
+                  {...field} 
+                  className="bg-[#0a0b1e] border-[#00fff0]/40 focus:border-[#00fff0] text-white"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button 
+          type="submit" 
+          disabled={isLoading} 
+          className="w-full bg-gradient-to-r from-[#00fff0] to-[#0077ff] text-[#0a0b1e] font-bold hover:opacity-90 font-pixel"
         >
-          <Button 
-            type="submit" 
-            className="w-full bg-gradient-to-r from-primary/90 to-secondary/90 text-white hover:opacity-90 hover:shadow-lg transition-all shadow-md mt-2"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating account...' : 'Sign up'}
-          </Button>
-        </motion.div>
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing
+            </>
+          ) : (
+            'CREATE ACCOUNT'
+          )}
+        </Button>
       </form>
     </Form>
   );
