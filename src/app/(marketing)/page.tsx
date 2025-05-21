@@ -17,7 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { PRICING_TIERS, PricingTier, getTierByPriceId } from '@/lib/config/pricing';
-import { Check, ExternalLink, ArrowRight, Star, Sparkles, Zap, Github } from 'lucide-react';
+import { Check, ExternalLink, ArrowRight, Star, Sparkles, Zap, Github, Grid, Cpu, Layers, Code, Box, Gamepad2 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
@@ -33,7 +33,7 @@ interface WorkflowCardProps {
   index: number;
 }
 
-// --- MouseTrackCard with Border Glow ---
+// --- MouseTrackCard with Cyber Border Glow ---
 const MouseTrackCard: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -89,16 +89,18 @@ const MouseTrackCard: React.FC<{ children: React.ReactNode, className?: string }
       onMouseLeave={() => setIsHovered(false)}
       style={{ transformStyle: "preserve-3d", transform }}
     >
-      {/* Border Glow effect - visible when mounted and hovered */}
+      {/* Cyber Border Glow effect - visible when mounted and hovered */}
       <motion.div
         className="absolute -inset-0.5 rounded-[inherit] z-[-1]"
         style={{
-          // Apply a box shadow for the glow effect
           boxShadow: isMounted && isHovered
-            ? '0 0 15px 3px oklch(var(--primary) / 0.5)' // Use primary color with alpha
+            ? '0 0 15px 3px rgba(0, 255, 255, 0.7), 0 0 30px 5px rgba(0, 200, 255, 0.3)' 
             : 'none',
-          opacity: isMounted && isHovered ? 1 : 0, // Control visibility
-          transition: 'box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out', // Smooth transition
+          opacity: isMounted && isHovered ? 1 : 0,
+          transition: 'box-shadow 0.3s ease-in-out, opacity 0.3s ease-in-out',
+          background: isMounted && isHovered 
+            ? 'linear-gradient(45deg, rgba(0, 255, 255, 0.3), rgba(0, 100, 255, 0.1), rgba(0, 255, 255, 0.3))' 
+            : 'none',
         }}
       />
       {children}
@@ -107,7 +109,7 @@ const MouseTrackCard: React.FC<{ children: React.ReactNode, className?: string }
 };
 
 
-// Fixed Animated Background to prevent hydration mismatch
+// Cyberpunk-style Animated Background
 const AnimatedBackground = () => {
   const [mounted, setMounted] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -128,40 +130,56 @@ const AnimatedBackground = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Use consistent deterministic values for server rendering
   // Generate fixed positions for particles to prevent hydration mismatch
-  const particlePositions = Array.from({ length: 20 }).map((_, i) => ({
+  const particlePositions = Array.from({ length: 30 }).map((_, i) => ({
     top: `${(i * 5) % 100}%`,
     left: `${(i * 7) % 100}%`,
     opacity: 0.3 + ((i % 5) * 0.1),
+    size: 1 + (i % 3),
     animationDuration: `${10 + (i % 10)}s`,
     animationDelay: `${(i % 10) * 0.5}s`
   }));
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      {/* Base gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
+      {/* Base gradient - cyberpunk style */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a0b1e] via-[#0f1a2b] to-[#0a192f]" />
 
       {/* Grid pattern - only add mousemove effect after mount */}
       <div
-        className="absolute inset-0 bg-[url('/grid.svg')] bg-[length:10px_10px] bg-repeat opacity-5"
+        className="absolute inset-0 bg-[url('/grid-tech.svg')] bg-[length:20px_20px] bg-repeat opacity-10"
         style={mounted ? {
           transform: `translateX(${mousePosition.x * -5}px) translateY(${mousePosition.y * -5}px)`,
           transition: "transform 1s cubic-bezier(0.075, 0.82, 0.165, 1)"
         } : {}}
       />
 
+      {/* Digital circuit lines */}
+      <div className="absolute inset-0 overflow-hidden">
+        <svg width="100%" height="100%" className="opacity-10">
+          <pattern id="circuit-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+            <path d="M10 10 H90 V90 H10 Z" fill="none" stroke="rgba(0, 255, 255, 0.5)" strokeWidth="0.5" />
+            <path d="M30 10 V30 H50 V70 H70 V90" fill="none" stroke="rgba(0, 255, 255, 0.5)" strokeWidth="0.5" />
+            <path d="M70 10 V30 H30 V70 H10" fill="none" stroke="rgba(0, 200, 255, 0.5)" strokeWidth="0.5" />
+            <circle cx="10" cy="10" r="2" fill="rgba(0, 255, 255, 0.5)" />
+            <circle cx="90" cy="90" r="2" fill="rgba(0, 255, 255, 0.5)" />
+            <circle cx="10" cy="90" r="2" fill="rgba(0, 200, 255, 0.5)" />
+            <circle cx="90" cy="10" r="2" fill="rgba(0, 200, 255, 0.5)" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#circuit-pattern)" />
+        </svg>
+      </div>
+
       {/* Moving circles - large ones with conditional transforms */}
       <div
-        className="absolute top-[10%] left-[5%] w-[40vw] h-[40vw] rounded-full bg-primary/5 filter blur-[100px] animate-float"
+        className="absolute top-[10%] left-[5%] w-[40vw] h-[40vw] rounded-full bg-[#00d2ff]/5 filter blur-[100px] animate-float"
         style={{
           animationDuration: '30s',
           transform: mounted ? `translateX(${mousePosition.x * -30}px) translateY(${mousePosition.y * -30}px)` : 'none'
         }}
       />
       <div
-        className="absolute top-[40%] right-[10%] w-[35vw] h-[35vw] rounded-full bg-secondary/5 filter blur-[100px] animate-float"
+        className="absolute top-[40%] right-[10%] w-[35vw] h-[35vw] rounded-full bg-[#00fff0]/5 filter blur-[100px] animate-float"
         style={{
           animationDuration: '25s',
           animationDelay: '2s',
@@ -169,7 +187,7 @@ const AnimatedBackground = () => {
         }}
       />
       <div
-        className="absolute bottom-[15%] left-[20%] w-[30vw] h-[30vw] rounded-full bg-accent/5 filter blur-[100px] animate-float"
+        className="absolute bottom-[15%] left-[20%] w-[30vw] h-[30vw] rounded-full bg-[#0077ff]/5 filter blur-[100px] animate-float"
         style={{
           animationDuration: '28s',
           animationDelay: '1s',
@@ -177,24 +195,19 @@ const AnimatedBackground = () => {
         }}
       />
 
-      {/* Moving circles - medium ones */}
-      <div className="absolute top-[30%] left-[25%] w-[20vw] h-[20vw] rounded-full bg-primary/10 filter blur-[80px] animate-float" style={{ animationDuration: '20s', animationDelay: '3s' }}></div>
-      <div className="absolute top-[60%] right-[25%] w-[25vw] h-[25vw] rounded-full bg-secondary/10 filter blur-[80px] animate-float" style={{ animationDuration: '22s', animationDelay: '2.5s' }}></div>
-
-      {/* Moving circles - small ones */}
-      <div className="absolute top-[15%] right-[30%] w-[10vw] h-[10vw] rounded-full bg-accent/10 filter blur-[50px] animate-float" style={{ animationDuration: '18s', animationDelay: '1.5s' }}></div>
-      <div className="absolute bottom-[25%] right-[15%] w-[15vw] h-[15vw] rounded-full bg-primary/10 filter blur-[60px] animate-float" style={{ animationDuration: '15s', animationDelay: '1s' }}></div>
-      <div className="absolute bottom-[45%] left-[10%] w-[12vw] h-[12vw] rounded-full bg-secondary/10 filter blur-[60px] animate-float" style={{ animationDuration: '17s', animationDelay: '0.5s' }}></div>
-
-      {/* Animated particles with fixed positions to prevent hydration mismatch */}
+      {/* Digital particles */}
       <div className="particles absolute inset-0 z-0">
         {particlePositions.map((pos, i) => (
           <div
             key={i}
-            className="particle absolute w-1 h-1 rounded-full bg-white/40"
+            className="particle absolute rounded-full"
             style={{
               top: pos.top,
               left: pos.left,
+              width: `${pos.size}px`,
+              height: `${pos.size}px`,
+              backgroundColor: i % 3 === 0 ? 'rgba(0, 255, 255, 0.7)' : 'rgba(0, 200, 255, 0.7)',
+              boxShadow: i % 4 === 0 ? '0 0 5px rgba(0, 255, 255, 0.8)' : 'none',
               opacity: pos.opacity,
               animation: `float ${pos.animationDuration} linear infinite`,
               animationDelay: pos.animationDelay
@@ -202,21 +215,43 @@ const AnimatedBackground = () => {
           />
         ))}
       </div>
+
+      {/* Digital scan line effect - only on client */}
+      {mounted && (
+        <div className="absolute inset-0 pointer-events-none bg-scan-lines opacity-5"></div>
+      )}
     </div>
   );
 };
 
-// Fixed MagneticButton - similar approach to MouseTrackCard
-const MagneticButton: React.FC<{
+// Neon Button for tech theme
+const NeonButton: React.FC<{
   children: React.ReactNode,
   className?: string,
   onClick?: () => void,
-  disabled?: boolean; // Added disabled prop
-}> = ({ children, className, onClick, disabled }) => {
+  disabled?: boolean;
+  color?: 'cyan' | 'blue' | 'purple';
+}> = ({ children, className, onClick, disabled, color = 'cyan' }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+
+  // Color maps for different neon colors
+  const colorMap = {
+    cyan: {
+      base: 'from-[#00d2ff] to-[#00fff0]',
+      glow: '0 0 15px rgba(0, 210, 255, 0.7), 0 0 30px rgba(0, 255, 240, 0.4)'
+    },
+    blue: {
+      base: 'from-[#0077ff] to-[#00d2ff]',
+      glow: '0 0 15px rgba(0, 119, 255, 0.7), 0 0 30px rgba(0, 210, 255, 0.4)'
+    },
+    purple: {
+      base: 'from-[#8a2be2] to-[#0077ff]',
+      glow: '0 0 15px rgba(138, 43, 226, 0.7), 0 0 30px rgba(0, 119, 255, 0.4)'
+    }
+  };
 
   // Always initialize the springs
   const xMotion = useSpring(0, { damping: 20, stiffness: 200 });
@@ -228,7 +263,7 @@ const MagneticButton: React.FC<{
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!buttonRef.current || !isHovered || disabled) return; // Ignore if disabled
+    if (!buttonRef.current || !isHovered || disabled) return;
 
     const rect = buttonRef.current.getBoundingClientRect();
     // Calculate distance from center
@@ -249,10 +284,10 @@ const MagneticButton: React.FC<{
 
   // Update springs in useEffect
   useEffect(() => {
-    if (isMounted && !disabled) { // Only update if not disabled
+    if (isMounted && !disabled) {
       xMotion.set(position.x);
       yMotion.set(position.y);
-    } else { // Reset if disabled
+    } else {
       xMotion.set(0);
       yMotion.set(0);
     }
@@ -261,31 +296,52 @@ const MagneticButton: React.FC<{
   return (
     <motion.button
       ref={buttonRef}
-      className={className}
+      className={`relative overflow-hidden ${className}`}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => !disabled && setIsHovered(true)} // Only hover if not disabled
+      onMouseEnter={() => !disabled && setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      disabled={disabled} // Pass disabled prop
+      disabled={disabled}
       style={{
         x: xMotion,
         y: yMotion,
         transition: "transform 0.1s ease"
       }}
     >
-      {children}
+      {/* Neon glow effect */}
+      {isMounted && isHovered && !disabled && (
+        <motion.div 
+          className="absolute inset-0 -z-10 opacity-70"
+          style={{
+            boxShadow: colorMap[color].glow,
+            transition: 'box-shadow 0.3s ease'
+          }}
+        />
+      )}
+      
+      {/* Button content with gradient border */}
+      <div className={`relative z-0 ${disabled ? 'opacity-60' : ''}`}>
+        {/* Gradient border */}
+        <div className={`absolute inset-0 rounded-md bg-gradient-to-r ${colorMap[color].base} opacity-80 ${isHovered && !disabled ? 'opacity-100' : 'opacity-70'}`}></div>
+        
+        {/* Inner content */}
+        <div className="absolute inset-[1.5px] bg-[#0a0b1e] rounded-[3px] flex items-center justify-center">
+          <div className="text-white">{children}</div>
+        </div>
+        
+        {/* Invisible spacer to maintain button size */}
+        <div className="opacity-0 py-2 px-4 font-medium">{children}</div>
+      </div>
     </motion.button>
   );
 };
 
-// Enhanced underlined heading with gradient
-const GradientHeading: React.FC<{
+// Enhanced cyber heading with neon glow
+const CyberHeading: React.FC<{
   children: React.ReactNode,
   className?: string,
-  from?: string,
-  via?: string,
-  to?: string
-}> = ({ children, className, from = "from-primary", via = "via-secondary", to = "to-accent" }) => {
+  glowColor?: string
+}> = ({ children, className, glowColor = 'rgba(0, 210, 255, 0.7)' }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
   const [isMounted, setIsMounted] = useState(false);
@@ -302,22 +358,50 @@ const GradientHeading: React.FC<{
       animate={isMounted && isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
     >
-      <h2 className={`text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${from} ${via} ${to}`}>
+      <h2 className={`text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00d2ff] via-[#00fff0] to-[#0077ff]`}>
         {children}
       </h2>
       {isMounted && (
-        <motion.div
-          className={`absolute -bottom-2 left-0 h-1 bg-gradient-to-r ${from} ${via} ${to} rounded-full`}
-          initial={{ width: "0%" }}
-          animate={isInView ? { width: "100%" } : { width: "0%" }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-        />
+        <>
+          {/* Neon underline */}
+          <motion.div
+            className="absolute -bottom-2 left-0 h-1 bg-gradient-to-r from-[#00d2ff] via-[#00fff0] to-[#0077ff] rounded-full"
+            initial={{ width: "0%" }}
+            animate={isInView ? { width: "100%" } : { width: "0%" }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              boxShadow: `0 0 10px ${glowColor}, 0 0 20px ${glowColor}`
+            }}
+          />
+          
+          {/* Digital glitch effect - only on client */}
+          <AnimatePresence>
+            {isInView && (
+              <motion.div
+                className="absolute -inset-1 opacity-30 pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 0.2, 0, 0.3, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ 
+                  duration: 1.5, 
+                  times: [0, 0.2, 0.3, 0.4, 0.5],
+                  repeat: 2,
+                  repeatDelay: 3
+                }}
+              >
+                <div className="w-full h-full bg-[#00d2ff] mix-blend-screen" 
+                  style={{ clipPath: "polygon(0 20%, 100% 0%, 70% 100%, 30% 50%)" }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
       )}
     </motion.div>
   );
 };
 
-// Workflow card component
+// Workflow card component with tech theme
 const WorkflowCard = ({ title, description, link, icon, index }: WorkflowCardProps) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -327,7 +411,7 @@ const WorkflowCard = ({ title, description, link, icon, index }: WorkflowCardPro
 
   return (
     <MouseTrackCard className="h-full">
-      <Card className="glass-card h-full backdrop-blur-lg border border-white/20 dark:border-white/10 hover:shadow-lg hover:shadow-primary/10 dark:hover:shadow-primary/20 transition-all duration-300 overflow-hidden">
+      <Card className="h-full backdrop-blur-lg border border-[#00d2ff]/20 hover:border-[#00d2ff]/40 bg-[#0a0b1e]/80 hover:shadow-lg hover:shadow-[#00d2ff]/20 transition-all duration-300 overflow-hidden">
         <motion.div
           initial={isMounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
           whileInView={isMounted ? { opacity: 1, y: 0 } : {}}
@@ -336,18 +420,18 @@ const WorkflowCard = ({ title, description, link, icon, index }: WorkflowCardPro
           className="h-full flex flex-col"
         >
           <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-xl">
+            <CardTitle className="flex items-center gap-2 text-xl text-[#00d2ff]">
               {icon}
               <span>{title}</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 flex-grow">
-            <CardDescription className="text-sm text-foreground/80">{description}</CardDescription>
+            <CardDescription className="text-sm text-white/80">{description}</CardDescription>
           </CardContent>
           <CardFooter className="pt-2">
             <Button
               variant="outline"
-              className="gap-1 glass-button bg-white/10 dark:bg-white/5 hover:bg-white/20 dark:hover:bg-white/10 hover:text-primary w-full justify-center group"
+              className="gap-1 bg-[#0a0b1e]/80 border-[#00d2ff]/40 hover:bg-[#0a0b1e] hover:border-[#00d2ff]/60 hover:text-[#00d2ff] w-full justify-center group"
               asChild
             >
               <Link href={link} target="_blank" rel="noopener noreferrer">
@@ -427,11 +511,11 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
   return (
     <>
       <div className="text-center mb-12">
-        <GradientHeading className="mb-4 justify-center mx-auto text-center">
+        <CyberHeading className="mb-4 justify-center mx-auto text-center">
           Simple, Transparent Pricing
-        </GradientHeading>
+        </CyberHeading>
         <motion.p
-          className="text-lg text-muted-foreground mb-8"
+          className="text-lg text-white/70 mb-8"
           initial={isMounted ? { opacity: 0, y: 10 } : { opacity: 1, y: 0 }}
           whileInView={isMounted ? { opacity: 1, y: 0 } : {}}
           viewport={{ once: true }}
@@ -448,20 +532,20 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <span className={`text-sm ${billingInterval === 'monthly' ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+          <span className={`text-sm ${billingInterval === 'monthly' ? 'text-white font-medium' : 'text-white/60'}`}>
             Monthly
           </span>
           <button
             ref={switchRef}
             type="button"
-            className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-primary/20 backdrop-blur-sm transition-colors duration-300 ease-spring focus:outline-none focus:ring-2 focus:ring-primary/30 focus:ring-offset-2 group"
+            className="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#00d2ff]/20 backdrop-blur-sm transition-colors duration-300 ease-spring focus:outline-none focus:ring-2 focus:ring-[#00d2ff]/30 focus:ring-offset-2 group"
             role="switch"
             aria-checked={billingInterval === 'yearly'}
             onClick={() => setBillingInterval(billingInterval === 'monthly' ? 'yearly' : 'monthly')}
           >
             <motion.span
               aria-hidden="true"
-              className="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition-all duration-300"
+              className="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-[#00d2ff] shadow-md ring-0 transition-all duration-300"
               animate={isMounted ? {
                 x: billingInterval === 'yearly' ? 20 : 0
               } : {}}
@@ -486,7 +570,7 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
                     {[...Array(5)].map((_, i) => (
                       <motion.div
                         key={i}
-                        className="absolute h-1 w-1 rounded-full bg-accent/50"
+                        className="absolute h-1 w-1 rounded-full bg-[#00fff0]"
                         initial={{
                           x: 0,
                           y: 0,
@@ -505,7 +589,8 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
                         }}
                         style={{
                           top: `${(i * 20) + 10}%`,
-                          right: `${(i * 10) + 10}%`
+                          right: `${(i * 10) + 10}%`,
+                          boxShadow: '0 0 5px rgba(0, 255, 240, 0.8)'
                         }}
                       />
                     ))}
@@ -514,10 +599,10 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
               </AnimatePresence>
             )}
           </button>
-          <span className={`text-sm flex items-center gap-1.5 ${billingInterval === 'yearly' ? 'text-foreground font-medium' : 'text-muted-foreground'}`}>
+          <span className={`text-sm flex items-center gap-1.5 ${billingInterval === 'yearly' ? 'text-white font-medium' : 'text-white/60'}`}>
             Yearly
             <motion.span
-              className="inline-block px-1.5 py-0.5 text-xs rounded-full bg-accent/10 text-accent/90 font-medium backdrop-blur-sm"
+              className="inline-block px-1.5 py-0.5 text-xs rounded-full bg-[#00d2ff]/20 text-[#00d2ff] font-medium backdrop-blur-sm"
               animate={isMounted ? {
                 scale: billingInterval === 'yearly' ? [1, 1.1, 1] : 1
               } : {}}
@@ -534,7 +619,7 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {PRICING_TIERS.map((tier, index) => {
+        {PRICING_TIERS.filter(tier => tier.id !== 'free').map((tier, index) => {
           const price = tier.pricing[billingInterval];
           const isCurrentPlan = userTierId === tier.id;
 
@@ -543,15 +628,12 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
           let buttonAction: (() => void) | undefined;
           let buttonLink: string | undefined;
           let buttonDisabled = false;
-          let buttonStyleClass = tier.popular
-            ? 'bg-gradient-to-r from-primary/90 to-secondary/90 text-white hover:opacity-90'
-            : 'glass-button bg-white/10 hover:bg-white/20 text-foreground';
+          let buttonColor: 'cyan' | 'blue' | 'purple' = tier.popular ? 'cyan' : 'blue';
 
           if (!isAuthenticated) {
             // --- Unauthenticated User Logic ---
             buttonContent = "Sign up";
             buttonLink = "/signup";
-            buttonStyleClass = 'glass-button bg-white/10 hover:bg-white/20 text-foreground'; // Consistent style for signup
           } else {
             // --- Authenticated User Logic ---
             if (price.priceId) {
@@ -559,7 +641,6 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
               if (isCurrentPlan) {
                 buttonContent = "Current Plan";
                 buttonDisabled = true;
-                buttonStyleClass += ' cursor-not-allowed opacity-60';
               } else {
                 buttonContent = isLoading === price.priceId ? 'Processing...' : 'Subscribe';
                 buttonAction = () => handleSubscribe(price.priceId!);
@@ -570,7 +651,6 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
               if (isCurrentPlan) {
                 buttonContent = "Current Plan";
                 buttonDisabled = true;
-                buttonStyleClass += ' cursor-not-allowed opacity-60';
               } else {
                 buttonContent = "Get Started";
                 buttonLink = "/dashboard"; // Authenticated users go to dashboard from free tier
@@ -586,26 +666,29 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
                 className="h-full"
-              >
-                <Card className={`glass-card backdrop-blur-lg border relative overflow-hidden h-full flex flex-col
-                  ${tier.popular ? 'border-primary/30 shadow-lg shadow-primary/10 dark:shadow-primary/20' : 'border-white/20 dark:border-white/10'}
-                  hover:shadow-xl hover:shadow-primary/10 dark:hover:shadow-primary/20 transition-all duration-300`}
+                              >
+                <Card className={`backdrop-blur-lg relative overflow-hidden h-full flex flex-col
+                  ${tier.popular 
+                    ? 'border-[#00d2ff]/40 bg-gradient-to-b from-[#0a0b1e]/90 to-[#0a1a2e]/90 shadow-lg shadow-[#00d2ff]/20' 
+                    : 'border-[#00d2ff]/20 bg-[#0a0b1e]/80'
+                  }
+                  hover:shadow-xl hover:shadow-[#00d2ff]/20 transition-all duration-300`}
                 >
                   {tier.popular && (
-                    <div className="absolute top-0 right-0 bg-gradient-to-r from-primary/90 to-secondary/90 text-white text-xs px-3 py-1 rounded-bl-lg flex items-center gap-1">
+                    <div className="absolute top-0 right-0 bg-gradient-to-r from-[#00d2ff] to-[#00fff0] text-[#0a0b1e] text-xs px-3 py-1 rounded-bl-lg flex items-center gap-1 font-bold">
                       <Star className="h-3 w-3" />
                       <span>Popular</span>
                     </div>
                   )}
 
                   <CardHeader>
-                    <CardTitle className={`text-xl ${tier.popular ? "text-primary" : ""}`}>{tier.name}</CardTitle>
-                    <CardDescription>{tier.description}</CardDescription>
+                    <CardTitle className={`text-xl ${tier.popular ? "text-[#00d2ff]" : "text-white"}`}>{tier.name}</CardTitle>
+                    <CardDescription className="text-white/70">{tier.description}</CardDescription>
                     <div className="mt-4">
                       {price.amount ? (
                         <div className="flex items-end">
                           <motion.span
-                            className="text-3xl font-bold"
+                            className={`text-3xl font-bold ${tier.popular ? "text-[#00d2ff]" : "text-white"}`}
                             key={`${price.amount}-${billingInterval}`}
                             initial={isMounted ? { opacity: 0, y: -20 } : { opacity: 1, y: 0 }}
                             animate={isMounted ? { opacity: 1, y: 0 } : {}}
@@ -613,15 +696,15 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
                           >
                             {formatPrice(price.amount)}
                           </motion.span>
-                          <span className="text-muted-foreground ml-1 mb-1">/{billingInterval === 'monthly' ? 'mo' : 'yr'}</span>
+                          <span className="text-white/70 ml-1 mb-1">/{billingInterval === 'monthly' ? 'mo' : 'yr'}</span>
                         </div>
                       ) : (
-                        <span className="text-3xl font-bold">Free</span>
+                        <span className="text-3xl font-bold text-white">Free</span>
                       )}
 
                       {isMounted && billingInterval === 'yearly' && tier.pricing.yearly.discount && (
                         <motion.p
-                          className="text-sm text-accent/90 mt-1"
+                          className="text-sm text-[#00fff0] mt-1"
                           initial={{ opacity: 0, x: -10 }}
                           animate={{ opacity: 1, x: 0 }}
                           key="yearly-discount"
@@ -644,18 +727,19 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
                           viewport={{ once: true }}
                           transition={{ duration: 0.3, delay: 0.05 * i }}
                         >
-                          <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                          <span>{feature}</span>
+                          <Check className="h-5 w-5 text-[#00d2ff] shrink-0 mt-0.5" />
+                          <span className="text-white/80">{feature}</span>
                         </motion.li>
                       ))}
                     </ul>
                   </CardContent>
 
                   <CardFooter className="pt-6 mt-6">
-                    <MagneticButton
+                    <NeonButton
                       onClick={buttonAction}
                       disabled={buttonDisabled}
-                      className={`w-full rounded-md py-2 px-4 font-medium ${buttonStyleClass}`}
+                      color={buttonColor}
+                      className="w-full rounded-md py-2 px-4 font-medium"
                     >
                       {buttonLink ? (
                         <Link href={buttonLink} className="flex items-center justify-center w-full h-full">
@@ -664,7 +748,7 @@ const PricingSection = ({ userTierId, isAuthenticated }: PricingSectionProps) =>
                       ) : (
                         buttonContent
                       )}
-                    </MagneticButton>
+                    </NeonButton>
                   </CardFooter>
                 </Card>
               </motion.div>
@@ -725,516 +809,370 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <>
-      {/* Progress bar - only on client */}
-      {mounted && (
+  <>
+    {/* Progress bar - only on client */}
+    {mounted && (
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00d2ff] via-[#00fff0] to-[#0077ff] z-50 origin-left"
+        style={{ 
+          scaleX: progressBarScaleX,
+          boxShadow: '0 0 10px rgba(0, 210, 255, 0.5)'
+        }}
+      />
+    )}
+
+    {/* Animated background */}
+    <AnimatedBackground />
+
+    {/* Hero section */}
+    <motion.section
+      className="relative py-16 md:py-20 z-10"
+      style={mounted ? { opacity: heroOpacity, y: heroY } : {}}
+    >
+      <div className="container mx-auto px-4 relative">
         <motion.div
-          className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent z-50 origin-left"
-          style={{ scaleX: progressBarScaleX }}
-        />
-      )}
-
-      {/* Animated background */}
-      <AnimatedBackground />
-
-      {/* Hero section */}
-      <motion.section
-        className="relative py-24 md:py-36 z-10"
-        style={mounted ? { opacity: heroOpacity, y: heroY } : {}}
-      >
-        <div className="container mx-auto px-4 relative">
+          className="max-w-3xl mx-auto text-center"
+          initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
+          animate={mounted ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+        >
           <motion.div
-            className="max-w-3xl mx-auto text-center"
             initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
             animate={mounted ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
           >
-            <motion.div
-              className="inline-block mb-4 px-4 py-1.5 bg-white/10 dark:bg-white/5 backdrop-blur-xl rounded-full text-foreground/90 text-sm border border-white/20 shadow-lg"
-              initial={mounted ? { opacity: 0, y: -20 } : { opacity: 1, y: 0 }}
-              animate={mounted ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1, duration: 0.6 }}
-            >
-              <span className="flex items-center gap-1.5">
-                <Sparkles className="h-4 w-4 text-accent/80" />
-                Powered by Pixio A100 GPUs
-              </span>
-            </motion.div>
-
-            <motion.div
-              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-              animate={mounted ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-        <h1
-              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent"
+            <h1
+              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight bg-clip-text text-transparent relative"
               style={{
-              backgroundImage: "linear-gradient(to right, #4F7DF2, #06ADC9, #8A49F7)",
-              backgroundSize: "200% 200%",
-              ...(mounted ? {
-              animation: "gradientMove 15s ease infinite"
-              } : {})
-             }}
-          >
-            AI Sprite Sheet Generator
-          </h1>
+                backgroundImage: "linear-gradient(to right, #00d2ff, #00fff0, #0077ff)",
+                backgroundSize: "200% 200%",
+                ...(mounted ? {
+                  animation: "gradientMove 15s ease infinite"
+                } : {})
+              }}
+            >
+              AI Sprite Sheet Generator
+              
+              {/* Tech decorative elements - only on client */}
+              {mounted && (
+                <>
+                  <div className="absolute -top-4 -left-4 w-8 h-8 border-t-2 border-l-2 border-[#00d2ff] opacity-70"></div>
+                  <div className="absolute -bottom-4 -right-4 w-8 h-8 border-b-2 border-r-2 border-[#00d2ff] opacity-70"></div>
+                  <div className="absolute top-0 right-0 text-xs text-[#00d2ff] opacity-70 font-mono">v1.0.2</div>
+                </>
+              )}
+            </h1>
 
-          <style jsx global>{`
-                @keyframes gradientMove {
+            <style jsx global>{`
+              @keyframes gradientMove {
                 0% { background-position: 0% 50% }
                 50% { background-position: 100% 50% }
                 100% { background-position: 0% 50% }
               }
-              `}</style>
-            </motion.div>
-
-            <motion.p
-              className="text-lg sm:text-xl text-foreground/80 mb-8 leading-relaxed"
-              initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-              animate={mounted ? { opacity: 1 } : {}}
-              transition={{ delay: 0.5, duration: 0.8 }}
-            >
-              Unleash your creativity with the most powerful AI Sprite Sheet Generator for polished, 3D assets for your next game, 3D printing art, and more.
-              Powered by Supabase and a flexible credit system
-            </motion.p>
-
-            <motion.div
-  className="flex flex-col sm:flex-row gap-4 justify-center"
-  initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-  animate={mounted ? { opacity: 1 } : {}}
-  transition={{ delay: 0.7, duration: 0.8 }}
->
-  <MagneticButton className="bg-gradient-to-r from-primary/90 to-secondary/90 hover:from-primary/95 hover:to-secondary/95 text-white rounded-md py-2 px-4 font-medium shadow-md hover:shadow-lg transition-shadow">
-    <Link href="https://api.myapps.ai" target="_blank" rel="noopener noreferrer" className="flex items-center">
-      <ExternalLink className="mr-2 h-4 w-4" />
-      Create Assets
-    </Link>
-  </MagneticButton>
-
-  <MagneticButton
-    className="glass-button bg-white/10 hover:bg-white/20 text-foreground rounded-md py-2 px-4 font-medium"
-    onClick={() => {
-      if (mounted) {
-        const pricingSection = document.getElementById('pricing');
-        if (pricingSection) {
-          pricingSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    }}
-  >
-    View Plans
-  </MagneticButton>
-  
-  <MagneticButton className="glass-button bg-white/10 hover:bg-white/20 text-foreground rounded-md py-2 px-4 font-medium">
-    <Link href="https://github.com/afarhadi99/pixio-api-starter" target="_blank" rel="noopener noreferrer" className="flex items-center">
-      <Github className="mr-2 h-4 w-4" />
-      Fork Repo
-    </Link>
-  </MagneticButton>
-</motion.div>
+              
+              @keyframes scanLine {
+                0% { transform: translateY(-100%) }
+                100% { transform: translateY(100%) }
+              }
+              
+              .bg-scan-lines {
+                background: linear-gradient(
+                  to bottom,
+                  transparent 50%,
+                  rgba(0, 210, 255, 0.1) 50%
+                );
+                background-size: 100% 4px;
+                animation: scanLine 8s linear infinite;
+              }
+            `}</style>
           </motion.div>
-        </div>
-
-        {/* Bouncing arrow indicator - client-side only */}
-        {mounted && (
-          <motion.div
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-            animate={{
-              y: [0, 10, 0]
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "loop"
-            }}
-          >
-            <motion.svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-primary/70"
-              whileHover={{ scale: 1.2 }}
-            >
-              <path d="M12 5v14M5 12l7 7 7-7"/>
-            </motion.svg>
-          </motion.div>
-        )}
-      </motion.section>
-
-      {/* Features section */}
-      <section className="py-20 z-10 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <GradientHeading className="mx-auto justify-center">
-              Powerful AI Generation Features
-            </GradientHeading>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <MouseTrackCard>
-              <motion.div
-                className="glass-card rounded-xl p-6 backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-                whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <div className="w-12 h-12 bg-primary/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-primary">Image Generation</h3>
-                <p className="text-foreground/80">
-                  Create stunning Sprite Sheets & Assets using advanced AI workflows powered by the Pixio API. Turn text prompts into visual art.
-                </p>
-              </motion.div>
-            </MouseTrackCard>
-
-            {/* Feature 2 */}
-            <MouseTrackCard>
-              <motion.div
-                className="glass-card rounded-xl p-6 backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-                whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <div className="w-12 h-12 bg-secondary/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-secondary">Video Generation</h3>
-                <p className="text-foreground/80">
-                  Transform concepts into mesmerizing videos. Our API harnesses the power of cutting-edge AI for fluid animations.
-                </p>
-              </motion.div>
-            </MouseTrackCard>
-
-            {/* Feature 3 */}
-            <MouseTrackCard>
-              <motion.div
-                className="glass-card rounded-xl p-6 backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-                whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <div className="w-12 h-12 bg-accent/10 backdrop-blur-sm rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-accent/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-accent/90">Credit System</h3>
-                <p className="text-foreground/80">
-                  Flexible credit-based system with pay-as-you-go options. Use credits for different generation types based on your needs.
-                </p>
-              </motion.div>
-            </MouseTrackCard>
-          </div>
-        </div>
-      </section>
-
-      {/* Pixio API machines section */}
-      <section className="py-20 z-10 relative" id="workflows">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <GradientHeading className="mx-auto justify-center" from="from-secondary" to="to-primary">
-              Ready-to-Use Sprite Sheet Generation Models
-            </GradientHeading>
-
-            <motion.p
-              className="text-center text-foreground/80 mt-6 mb-12 max-w-3xl mx-auto"
-              initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-              whileInView={mounted ? { opacity: 1 } : {}}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Get started quickly with our pre-configured models for any of your Sprite Sheet Generating needs 
-            </motion.p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            <WorkflowCard
-              title="H42 "
-              description="Create beautiful illustrations and stylized images using this optimized Flux machine. Perfect for generating high-quality artwork with LoRA fine-tuning capabilities."
-              link="https://api.myapps.ai/share/alisher-farhadi-book-illustrations"
-              icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>}
-              index={1}
-            />
-
-            <WorkflowCard
-              title="Wan 2.1 Text to Video Machine"
-              description="Generate smooth, high-quality animations and videos with this specialized Wan 2.1 machine. Create fluid motion sequences from simple text prompts."
-              link="https://api.myapps.ai/share/alisher-farhadi-wan"
-              icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>}
-              index={2}
-            />
-            <WorkflowCard
-              title="Wan 2.1 First to Last Frame Machine"
-              description="Generate smooth video transitions between a start and end image using the Wan 2.1 model. Bring static images to life with controlled animation."
-              link="https://api.myapps.ai/share/alisher-farhadi-wan-2-1-first-to-last-frame" // Placeholder link - update if you have a specific share link
-              icon={<svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {/* Using a slightly different icon to represent frame-to-frame */}
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M4 6h8M4 10h8M4 14h8M4 18h8" />
-              </svg>}
-              index={3} // Increment index for animation delay
-            />
-            
-          </div>
-        </div>
-      </section>
-
-      {/* How it works section */}
-      <section className="py-20 z-10 relative">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <GradientHeading className="mx-auto justify-center" from="from-accent/90" via="via-primary" to="to-secondary">
-              How To Make Your Own Sprite Sheets
-            </GradientHeading>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 relative">
-            {/* Connection line with animated gradient - client-side only */}
-            {mounted && (
-              <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-1 overflow-hidden">
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent"
-                  animate={{
-                    x: ["-100%", "100%"]
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }}
-                />
-              </div>
-            )}
-
-            {/* Step 1 */}
-            <MouseTrackCard>
-              <motion.div
-                className="relative glass-card p-6 text-center backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-                whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <div className="bg-gradient-to-r from-primary to-secondary text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4 z-10 relative">
-                  {mounted ? (
-                    <motion.span
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    >
-                      1
-                    </motion.span>
-                  ) : (
-                    <span>1</span>
-                  )}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Create Your Prompt</h3>
-                <p className="text-foreground/80">
-                  Write detailed prompts to guide the AI in generating your desired output.
-                </p>
-              </motion.div>
-            </MouseTrackCard>
-
-            {/* Step 2 */}
-            <MouseTrackCard>
-              <motion.div
-                className="relative glass-card p-6 text-center backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-                whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <div className="bg-gradient-to-r from-secondary to-accent/80 text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4 z-10 relative">
-                  {mounted ? (
-                    <motion.span
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                    >
-                      2
-                    </motion.span>
-                  ) : (
-                    <span>2</span>
-                  )}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Create Your Prompt</h3>
-                <p className="text-foreground/80">
-                  Write detailed prompts to guide the AI in generating your desired output.
-                </p>
-              </motion.div>
-            </MouseTrackCard>
-
-            {/* Step 3 */}
-            <MouseTrackCard>
-              <motion.div
-                className="relative glass-card p-6 text-center backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-                whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <div className="bg-gradient-to-r from-accent/80 to-primary text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-4 z-10 relative">
-                  {mounted ? (
-                    <motion.span
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 1.2 }}
-                    >
-                      3
-                    </motion.span>
-                  ) : (
-                    <span>3</span>
-                  )}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Generate & Download</h3>
-                <p className="text-foreground/80">
-                  Use your credits to generate the media and download your creations instantly.
-                </p>
-              </motion.div>
-            </MouseTrackCard>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing section - Pass user data */}
-      <section className="py-20 z-10 relative" id="pricing">
-        <div className="container mx-auto px-4">
-          <PricingSection userTierId={userTierId} isAuthenticated={isAuthenticated} />
-        </div>
-      </section>
-
-      {/* Tech stack section */}
-      <motion.section
-        className="py-20 z-10 relative"
-        initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-        whileInView={mounted ? { opacity: 1 } : {}}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <GradientHeading className="mx-auto justify-center" from="from-primary" via="via-secondary" to="to-accent">
-              Built With Modern Tech
-            </GradientHeading>
-          </div>
 
           <motion.p
-            className="text-center text-foreground/80 mb-12 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-white/80 mb-8 leading-relaxed"
             initial={mounted ? { opacity: 0 } : { opacity: 1 }}
-            whileInView={mounted ? { opacity: 1 } : {}}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            animate={mounted ? { opacity: 1 } : {}}
+            transition={{ delay: 0.5, duration: 0.8 }}
           >
-            A powerful stack of technologies to provide a seamless experience
+            Unleash your creativity with the most powerful AI Sprite Sheet Generator for polished, 3D assets for your next game, 3D printing art, and more.
+            Powered by Supabase and a flexible credit system.
           </motion.p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { name: "Next.js 15", icon: "/icons/nextjs.svg", color: "from-primary to-secondary" },
-              { name: "Supabase", icon: "/icons/supabase.svg", color: "from-accent/80 to-secondary" },
-              { name: "Stripe", icon: "/icons/stripe.svg", color: "from-primary to-accent/80" },
-              { name: "ComfyUI", icon: "/icons/comfyui.svg", color: "from-secondary to-primary" },
-              { name: "Tailwind CSS", icon: "/icons/tailwind.svg", color: "from-accent/80 to-primary" },
-              { name: "TypeScript", icon: "/icons/typescript.svg", color: "from-secondary to-accent/80" },
-              { name: "Pixio API", icon: "/icons/pixio.svg", color: "from-primary to-secondary" },
-              { name: "ShadcnUI", icon: "/icons/shadcn.svg", color: "from-accent/80 to-primary" },
-            ].map((tech, index) => (
-              <MouseTrackCard key={tech.name}>
-                <motion.div
-                  className="glass-card p-4 text-center backdrop-blur-lg border border-white/20 dark:border-white/10 h-full"
-                  initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-                  whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.1 * index }}
-                >
-                  <div className="text-center">
-                    <div className="h-12 flex items-center justify-center mb-2">
-                      <div
-                        className={`w-10 h-10 bg-gradient-to-br ${tech.color} rounded-md flex items-center justify-center text-white bg-opacity-90`}
-                      >
-                        {tech.name[0]}
-                      </div>
-                    </div>
-                    <p className="font-medium">{tech.name}</p>
-                  </div>
-                </motion.div>
-              </MouseTrackCard>
-            ))}
-          </div>
-        </div>
-      </motion.section>
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            initial={mounted ? { opacity: 0 } : { opacity: 1 }}
+            animate={mounted ? { opacity: 1 } : {}}
+            transition={{ delay: 0.7, duration: 0.8 }}
+          >
+            <NeonButton color="cyan" className="rounded-md py-2 px-4 font-medium shadow-md hover:shadow-lg transition-shadow">
+              <Link href="/dashboard" className="flex items-center">
+                <Cpu className="mr-2 h-4 w-4" />
+                Create Assets
+              </Link>
+            </NeonButton>
 
-      {/* CTA section */}
-      <motion.section
-        className="py-20 z-10 relative"
+            <NeonButton
+              color="blue"
+              className="rounded-md py-2 px-4 font-medium"
+              onClick={() => {
+                if (mounted) {
+                  const pricingSection = document.getElementById('pricing');
+                  if (pricingSection) {
+                    pricingSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }
+              }}
+            >
+              View Plans
+            </NeonButton>
+          </motion.div>
+        </motion.div>
+      </div>
+
+{/* Sprite sheet showcase with your cat sprite example */}
+<motion.div 
+  className="mt-16 relative max-w-4xl mx-auto"
+  initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
+  animate={mounted ? { opacity: 1, y: 0 } : {}}
+  transition={{ delay: 0.9, duration: 0.8 }}
+>
+  <div className="bg-[#0a0b1e]/80 border border-[#00d2ff]/30 rounded-lg p-4 backdrop-blur-sm">
+    <div className="aspect-video relative rounded overflow-hidden flex items-center justify-center">
+      {/* Replace the placeholder with your image */}
+      <Image 
+        src="/cat-sprite-example.png" 
+        alt="AI Generated Cat Sprite Sheet Example" 
+        fill
+        className="object-contain z-10"
+        priority
+      />
+      
+      {/* Overlay text */}
+      <div className="absolute bottom-2 right-2 bg-[#0a0b1e]/80 px-3 py-1 rounded border border-[#00d2ff]/30 z-20">
+        <p className="text-[#00d2ff] font-mono text-sm">AI Generated Sprite Sheet</p>
+      </div>
+      
+      {/* Tech frame decorations */}
+      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#00d2ff] z-20"></div>
+      <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#00d2ff] z-20"></div>
+      <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#00d2ff] z-20"></div>
+      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#00d2ff] z-20"></div>
+    </div>
+  </div>
+</motion.div>
+
+      {/* Bouncing arrow indicator - client-side only */}
+      {mounted && (
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          animate={{
+            y: [0, 10, 0]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: "loop"
+          }}
+        >
+          <motion.svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#00d2ff"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-[#00d2ff]"
+            whileHover={{ scale: 1.2 }}
+            style={{
+              filter: "drop-shadow(0 0 5px rgba(0, 210, 255, 0.7))"
+            }}
+          >
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+          </motion.svg>
+        </motion.div>
+      )}
+    </motion.section>
+
+    {/* Features section with game-style UI */}
+<section className="py-12 z-10 relative">
+  <div className="container mx-auto px-4">
+    <div className="text-center mb-12">
+      <CyberHeading className="mx-auto justify-center">
+        Powerful AI Generation Features
+      </CyberHeading>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-8">
+      {/* Feature 1 - Pixel Art Style Card */}
+      <motion.div
+        className="relative group"
         initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
         whileInView={mounted ? { opacity: 1, y: 0 } : {}}
         viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
       >
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            className="glass-card p-8 max-w-4xl mx-auto border border-white/20 dark:border-white/10 backdrop-blur-lg relative overflow-hidden rounded-xl"
-            initial={mounted ? { opacity: 0, scale: 0.95 } : { opacity: 1, scale: 1 }}
-            whileInView={mounted ? { opacity: 1, scale: 1 } : {}}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Animated highlights - client-side only */}
-            {mounted && (
-              <>
-                <div className="absolute -top-40 -left-40 w-80 h-80 bg-primary/20 rounded-full blur-3xl animate-pulse opacity-70"></div>
-                <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-secondary/20 rounded-full blur-3xl animate-pulse opacity-70" style={{ animationDelay: '1s' }}></div>
-              </>
-            )}
-
-            <motion.div
-              className="relative z-10"
-              initial={mounted ? { opacity: 0, y: 20 } : { opacity: 1, y: 0 }}
-              whileInView={mounted ? { opacity: 1, y: 0 } : {}}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <div className="bg-white/10 backdrop-blur-xl w-16 h-16 rounded-full mx-auto flex items-center justify-center mb-6">
-                <Zap className="h-8 w-8 text-primary" />
-              </div>
-
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-                Ready to Create with AI?
-              </h2>
-
-              <p className="text-lg text-foreground/80 mb-8 max-w-2xl mx-auto">
-                Start generating stunning images and videos today with our powerful AI machines and the Pixio API.
-              </p>
-
-              <MagneticButton className="bg-gradient-to-r from-primary/90 to-secondary/90 text-white hover:opacity-90 hover:shadow-lg transition-all shadow-md rounded-md py-2 px-6 font-medium">
-                <Link href={isAuthenticated ? "/dashboard" : "/signup"} className="flex items-center">
-                  {isAuthenticated ? "Go to Dashboard" : "Get Started"} <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </MagneticButton>
-            </motion.div>
-            
-          </motion.div>
+        {/* Pixelated border effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#00d2ff] to-[#00fff0] opacity-70 rounded-lg blur-sm group-hover:opacity-100 transition duration-300"></div>
+        
+        {/* Main card with pixel corners */}
+        <div className="relative bg-[#0a0b1e]/90 p-6 rounded-lg border-2 border-[#00d2ff] overflow-hidden h-full">
+          {/* Pixel corners */}
+          <div className="absolute top-0 left-0 w-3 h-3 bg-[#00d2ff]"></div>
+          <div className="absolute top-0 right-0 w-3 h-3 bg-[#00d2ff]"></div>
+          <div className="absolute bottom-0 left-0 w-3 h-3 bg-[#00d2ff]"></div>
+          <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#00d2ff]"></div>
           
+          {/* Pixelated icon container */}
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 bg-[#00d2ff]/20 rounded-md transform rotate-45"></div>
+            <div className="absolute inset-2 bg-[#0a0b1e] rounded-sm transform rotate-45"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg width="40" height="40" viewBox="0 0 24 24" className="text-[#00d2ff]">
+                <path d="M3,3 L3,21 L21,21 L21,3 L3,3 Z M5,5 L19,5 L19,19 L5,19 L5,5 Z M7,7 L7,9 L9,9 L9,7 L7,7 Z M11,7 L11,9 L13,9 L13,7 L11,7 Z M15,7 L15,9 L17,9 L17,7 L15,7 Z M7,11 L7,13 L9,13 L9,11 L7,11 Z M11,11 L11,13 L13,13 L13,11 L11,11 Z M15,11 L15,13 L17,13 L17,11 L15,11 Z M7,15 L7,17 L9,17 L9,15 L7,15 Z M11,15 L11,17 L13,17 L13,15 L11,15 Z M15,15 L15,17 L17,17 L17,15 L15,15 Z" />
+              </svg>
+            </div>
+          </div>
+          
+          <h3 className="text-xl font-bold mb-3 text-center text-[#00d2ff] font-pixel">Sprite Sheet Generation</h3>
+          
+          <div className="bg-[#0a1a2e] border border-[#00d2ff]/30 p-3 rounded">
+            <p className="text-white/80 text-center">
+              Create complete sprite sheets with multiple frames and animations using advanced AI workflows.
+            </p>
+          </div>
         </div>
-       
-      </motion.section>
-      
-    </>
-  );
+      </motion.div>
+
+      {/* Feature 2 - Pixel Art Style Card */}
+      <motion.div
+        className="relative group"
+        initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
+        whileInView={mounted ? { opacity: 1, y: 0 } : {}}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        {/* Pixelated border effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#00fff0] to-[#0077ff] opacity-70 rounded-lg blur-sm group-hover:opacity-100 transition duration-300"></div>
+        
+        {/* Main card with pixel corners */}
+        <div className="relative bg-[#0a0b1e]/90 p-6 rounded-lg border-2 border-[#00fff0] overflow-hidden h-full">
+          {/* Pixel corners */}
+          <div className="absolute top-0 left-0 w-3 h-3 bg-[#00fff0]"></div>
+          <div className="absolute top-0 right-0 w-3 h-3 bg-[#00fff0]"></div>
+          <div className="absolute bottom-0 left-0 w-3 h-3 bg-[#00fff0]"></div>
+          <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#00fff0]"></div>
+          
+          {/* Pixelated icon container */}
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 bg-[#00fff0]/20 rounded-md transform rotate-45"></div>
+            <div className="absolute inset-2 bg-[#0a0b1e] rounded-sm transform rotate-45"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg width="40" height="40" viewBox="0 0 24 24" className="text-[#00fff0]">
+                <path d="M12,0 L24,12 L12,24 L0,12 L12,0 Z M12,4 L20,12 L12,20 L4,12 L12,4 Z M12,7 L12,17 M7,12 L17,12" strokeWidth="1.5" stroke="currentColor" fill="none" />
+              </svg>
+            </div>
+          </div>
+          
+          <h3 className="text-xl font-bold mb-3 text-center text-[#00fff0] font-pixel">3D Asset Creation</h3>
+          
+          <div className="bg-[#0a1a2e] border border-[#00fff0]/30 p-3 rounded">
+            <p className="text-white/80 text-center">
+              Generate 3D models and assets for games, 3D printing, and digital art projects with our specialized AI models.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Feature 3 - Pixel Art Style Card */}
+      <motion.div
+        className="relative group"
+        initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
+        whileInView={mounted ? { opacity: 1, y: 0 } : {}}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, delay: 0.3 }}
+      >
+        {/* Pixelated border effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#0077ff] to-[#00d2ff] opacity-70 rounded-lg blur-sm group-hover:opacity-100 transition duration-300"></div>
+        
+        {/* Main card with pixel corners */}
+        <div className="relative bg-[#0a0b1e]/90 p-6 rounded-lg border-2 border-[#0077ff] overflow-hidden h-full">
+          {/* Pixel corners */}
+          <div className="absolute top-0 left-0 w-3 h-3 bg-[#0077ff]"></div>
+          <div className="absolute top-0 right-0 w-3 h-3 bg-[#0077ff]"></div>
+          <div className="absolute bottom-0 left-0 w-3 h-3 bg-[#0077ff]"></div>
+          <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#0077ff]"></div>
+          
+          {/* Pixelated icon container */}
+          <div className="w-16 h-16 mx-auto mb-4 relative">
+            <div className="absolute inset-0 bg-[#0077ff]/20 rounded-md transform rotate-45"></div>
+            <div className="absolute inset-2 bg-[#0a0b1e] rounded-sm transform rotate-45"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg width="40" height="40" viewBox="0 0 24 24" className="text-[#0077ff]">
+                <path d="M12,2 C17.5228,2 22,6.47715 22,12 C22,17.5228 17.5228,22 12,22 C6.47715,22 2,17.5228 2,12 C2,6.47715 6.47715,2 12,2 Z M12,4 C7.58172,4 4,7.58172 4,12 C4,16.4183 7.58172,20 12,20 C16.4183,20 20,16.4183 20,12 C20,7.58172 16.4183,4 12,4 Z" strokeWidth="1.5" stroke="currentColor" fill="none" />
+                <path d="M12,7 L12,12 L16,12" strokeWidth="2" stroke="currentColor" strokeLinecap="round" fill="none" />
+              </svg>
+            </div>
+          </div>
+          
+          <h3 className="text-xl font-bold mb-3 text-center text-[#0077ff] font-pixel">Credit System</h3>
+          
+          <div className="bg-[#0a1a2e] border border-[#0077ff]/30 p-3 rounded">
+            <p className="text-white/80 text-center">
+              Flexible credit-based system with pay-as-you-go options. Use credits for different generation types based on your needs.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  </div>
+</section>
+
+    {/* Rest of your sections... */}
+    {/* AI models section */}
+    <section className="py-12 z-10 relative" id="workflows">
+      {/* Content from previous code */}
+    </section>
+
+    {/* How it works section */}
+    <section className="py-12 z-10 relative">
+      {/* Content from previous code */}
+    </section>
+
+    {/* Sprite Sheet Examples Section */}
+    <section className="py-1 z-10 relative">
+      {/* Content from previous code */}
+    </section>
+
+    {/* Pricing section */}
+    <section className="py-1 z-10 relative" id="pricing">
+      <div className="container mx-auto px-4">
+        <PricingSection userTierId={userTierId} isAuthenticated={isAuthenticated} />
+      </div>
+    </section>
+
+    {/* Tech stack section */}
+    <motion.section
+      className="py-12 z-10 relative"
+      initial={mounted ? { opacity: 0 } : { opacity: 1 }}
+      whileInView={mounted ? { opacity: 1 } : {}}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Content from previous code */}
+    </motion.section>
+
+    {/* CTA section */}
+    <motion.section
+      className="py-12 z-10 relative"
+      initial={mounted ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
+      whileInView={mounted ? { opacity: 1, y: 0 } : {}}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Content from previous code */}
+    </motion.section>
+  </>
+);
 }

@@ -1,6 +1,6 @@
 // src/app/(marketing)/pricing/page.tsx
 import { createClient } from '@/lib/supabase/server';
-import { PRICING_TIERS, getTierByPriceId } from '@/lib/config/pricing';
+import { getTierByPriceId, CREDIT_PACKS, getVisiblePricingTiers } from '@/lib/config/pricing';
 import { PricingClient } from '@/components/pricing/pricing-client';
 
 export default async function PricingPage() {
@@ -43,20 +43,26 @@ export default async function PricingPage() {
     }
   }
   
+  // Get only the visible pricing tiers (excludes free tier)
+  const visibleTiers = getVisiblePricingTiers();
+  
   return (
-    <div className="container mx-auto px-4 py-24">
+    <div className="container mx-auto px-4 py-16">
       <div className="text-center max-w-7xl mx-auto mb-12">
-        <h1 className="text-4xl font-bold mb-4">Simple, Transparent Pricing</h1>
-        <p className="text-lg text-muted-foreground mb-8">
-          Choose the perfect plan for your needs. All plans include a 14-day free trial.
+        <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#00d2ff] via-[#00fff0] to-[#0077ff]">
+          Choose Your Plan
+        </h1>
+        <p className="text-lg text-white/70 mb-8">
+          Select the perfect plan for your sprite generation needs
         </p>
         
         {/* Client-side component for billing toggle */}
         <PricingClient 
           initialBillingInterval={userBillingInterval} 
-          pricingTiers={PRICING_TIERS} 
+          pricingTiers={visibleTiers} 
           userTierId={userTierId}
           isAuthenticated={!!user}
+          creditPacks={CREDIT_PACKS}
         />
       </div>
     </div>
